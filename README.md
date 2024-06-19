@@ -4,8 +4,9 @@ Una biblioteca de middleware para proteger rutas usando JSON Web Tokens (JWT) en
 
 ## Instalación
 
-````bash
+```console
 npm install jwt-express-middleware
+```
 
 # Uso
 # Configuración por Defecto
