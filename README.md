@@ -137,7 +137,12 @@ extractToken(req: Request): string
 
 req: Objeto de solicitud de Express.
 
-Licencia
-MIT
 
+## Screenshots
+
+![App Screenshot](https://i.ibb.co/PjWgdBF/code-jwt-1.png)
+
+![App Screenshot](https://i.ibb.co/XpfxyKW/code-jwt-2.png)
+![App Screenshot](https://i.ibb.co/PFYn1vx/code-jwt-3.png)
+![App Screenshot](https://i.ibb.co/jwHDLHq/code-jwt-4.png)
 ````
