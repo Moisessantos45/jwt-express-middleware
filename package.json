@@ -1,6 +1,6 @@
 {
   "name": "jwt-express-middleware",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JWT Express Middleware this is a simple middleware to verify JWT tokens in express",
   "keywords": [
     "jwt",
@@ -9,6 +9,11 @@
   ],
   "license": "MIT",
   "author": "Moises santos hernandez",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moisessantos45/jwt-express-middleware.git"
+  },
+  "homepage": "https://github.com/Moisessantos45/jwt-express-middleware.git",
   "main": "dist/index.js",
   "scripts": {
     "build-node": "tsc src/index.ts --outDir dist",
