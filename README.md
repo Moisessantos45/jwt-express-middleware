@@ -9,7 +9,6 @@ npm install jwt-express-middleware
 
 Uso
 Configuración por Defecto
-Aquí tienes un ejemplo de cómo usar el middleware con la configuración por defecto:
 
 import express from 'express';
 import { jwtMiddleware, extractToken, generateToken } from 'tu-biblioteca-jwt';
@@ -33,7 +32,6 @@ app.listen(3000, () => {
 });
 
 Configuración Personalizada
-Aquí tienes un ejemplo de cómo usar el middleware con opciones personalizadas:
 
 import express from 'express';
 import { jwtMiddleware, extractToken, generateToken } from 'tu-biblioteca-jwt';
@@ -67,8 +65,6 @@ app.listen(3000, () => {
 });
 
 ### Ejemplo de Uso con un Router de Rutas
-
-Aquí tienes un ejemplo de cómo proteger un router de rutas usando `jwt-express-middleware`:
 
 ```typescript
 import { Router } from "express";
@@ -144,6 +140,4 @@ req: Objeto de solicitud de Express.
 Licencia
 MIT
 
-
-Este README proporciona ejemplos claros y concisos de cómo usar tu middleware con las configuraciones por defecto y personalizadas. También incluye una sección de API para que los usuarios puedan entender cómo utilizar las funciones disponibles en tu biblioteca.
 ````
