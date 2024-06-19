@@ -7,20 +7,21 @@ Una biblioteca de middleware para proteger rutas usando JSON Web Tokens (JWT) en
 ````bash
 npm install jwt-express-middleware
 
-Uso
-Configuración por Defecto
+# Uso
+# Configuración por Defecto
 
+```js
 import express from 'express';
 import { jwtMiddleware, extractToken, generateToken } from 'tu-biblioteca-jwt';
 
 const app = express();
 const secretKey = 'your-secret-key';
 
-// Generar un token con los valores predeterminados
+## Generar un token con los valores predeterminados
 const token = generateToken({ userId: '12345', role: 'admin' }, secretKey);
 console.log('Generated Token:', token);
 
-// Usar el middleware con la configuración por defecto
+### Usar el middleware con la configuración por defecto
 app.use(jwtMiddleware(secretKey));
 
 app.get('/protected', (req, res) => {
@@ -30,24 +31,27 @@ app.get('/protected', (req, res) => {
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 });
+```
 
-Configuración Personalizada
-
+# Configuración Personalizada
+```js
 import express from 'express';
 import { jwtMiddleware, extractToken, generateToken } from 'tu-biblioteca-jwt';
 
 const app = express();
 const secretKey = 'your-secret-key';
 
-// Generar un token con un tiempo de expiración personalizado
+## Generar un token con un tiempo de expiración personalizado
 const token = generateToken(
   { userId: '12345', role: 'admin' },
   secretKey,
   { expiresIn: '2h' }
 );
 console.log('Generated Token:', token);
+```
 
-// Usar el middleware con opciones personalizadas
+## Usar el middleware con opciones personalizadas
+```js
 app.use(jwtMiddleware(secretKey, {
   message: {
     errorMessage: 'Custom invalid token message',
@@ -63,6 +67,7 @@ app.get('/protected', (req, res) => {
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 });
+```
 
 ### Ejemplo de Uso con un Router de Rutas
 
@@ -104,9 +109,10 @@ router.put("/update/:id", jwtMiddleware(secretKey), updateProyect);
 router.delete("/delete/:id", jwtMiddleware(secretKey), deleteProyect);
 
 export default router;
+````
 
-API
-jwtMiddleware
+# API
+## jwtMiddleware
 Middleware para proteger rutas usando JWT.
 
 jwtMiddleware(secretKey: string, options?: JwtMiddlewareOptions)
@@ -145,4 +151,3 @@ req: Objeto de solicitud de Express.
 ![App Screenshot](https://i.ibb.co/XpfxyKW/code-jwt-2.png)
 ![App Screenshot](https://i.ibb.co/PFYn1vx/code-jwt-3.png)
 ![App Screenshot](https://i.ibb.co/jwHDLHq/code-jwt-4.png)
-````
