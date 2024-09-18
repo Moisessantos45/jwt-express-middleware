@@ -1,6 +1,6 @@
 {
   "name": "jwt-express-middleware",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "JWT Express Middleware this is a simple middleware to verify JWT tokens in express",
   "keywords": [
     "jwt",

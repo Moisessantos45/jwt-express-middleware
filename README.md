@@ -13,7 +13,7 @@ npm install jwt-express-middleware
 
 ```js
 import express from 'express';
-import { jwtMiddleware, extractToken, generateToken } from 'tu-biblioteca-jwt';
+import { jwtMiddleware, extractToken, generateToken } from 'jwt-express-middleware';
 
 const app = express();
 const secretKey = 'your-secret-key';

@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction } from "express";
+import { Response, Request as ExpressRequest, NextFunction } from "express";
 import { verify, sign, Algorithm, SignOptions } from "jsonwebtoken";
 
 /**
@@ -7,8 +7,8 @@ import { verify, sign, Algorithm, SignOptions } from "jsonwebtoken";
  * @property {string} errorMessage - Message to be sent when token is invalid
  */
 interface Message {
-  successMessage?: string;
-  errorMessage?: string;
+  success?: string;
+  error?: string;
 }
 
 /**
@@ -33,6 +33,10 @@ interface JwtPayload {
   [key: string]: string;
 }
 
+interface Request extends ExpressRequest {
+  user?: JwtPayload;
+}
+
 /**
  * @function jwtMiddleware
  * @param {string} secretKey - Secret key to be used for the token
@@ -40,10 +44,10 @@ interface JwtPayload {
  * @returns {Function} - Middleware function
  */
 
-const defaultOptions: JwtMiddlewareOptions = {
+const DEFAULT_OPTIONS: Required<JwtMiddlewareOptions> = {
   message: {
-    successMessage: "Token is valid",
-    errorMessage: "Invalid token",
+    success: "Token is valid",
+    error: "Invalid token",
   },
   expiresIn: "1h",
   algorithms: ["HS256"],
@@ -63,36 +67,28 @@ const defaultOptions: JwtMiddlewareOptions = {
 
 const jwtMiddleware = (
   secretKey: string,
-  options: JwtMiddlewareOptions = defaultOptions
+  options: JwtMiddlewareOptions = {}
 ) => {
   const { message, algorithms } = {
-    ...defaultOptions,
+    ...DEFAULT_OPTIONS,
     ...options,
-    message: {
-      ...defaultOptions.message,
-      ...options.message,
-    },
+    message: { ...DEFAULT_OPTIONS.message, ...options.message },
   };
 
-  return (req: Request, res: Response, next: NextFunction) => {
-    const { authorization } = req.headers;
-    if (!authorization) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-
-    const token = authorization.replace("Bearer ", "");
+  return (req: Request, res: Response, next: NextFunction): void => {
+    const token = extractToken(req);
 
     if (!token) {
-      res.status(401).send({ message: message!.errorMessage });
+      res.status(401).json({ message: "Unauthorized: No token provided" });
       return;
     }
 
-    verify(token, secretKey, { algorithms }, (err, _decoded) => {
+    verify(token, secretKey, { algorithms }, (err, decoded) => {
       if (err) {
-        res.status(401).send({ message: message!.errorMessage });
+        res.status(401).json({ message: message.error });
         return;
       }
+      req.user = decoded as JwtPayload;
       next();
     });
   };
@@ -104,9 +100,11 @@ const jwtMiddleware = (
  * @returns {string} - Token
  */
 
-const extractToken = (req: Request): string => {
-  const token = req.headers["authorization"]?.split(" ")[1] || "";
-  return token;
+const extractToken = (req: Request): string | undefined => {
+  const authHeader = req.headers.authorization;
+  return authHeader?.startsWith("Bearer ")
+    ? authHeader.substring(7)
+    : undefined;
 };
 
 /**
@@ -120,17 +118,10 @@ const extractToken = (req: Request): string => {
 const generateToken = (
   payload: JwtPayload,
   secretKey: string,
-  options: JwtMiddlewareOptions = defaultOptions
+  options: JwtMiddlewareOptions = {}
 ): string => {
-  const { expiresIn, algorithms } = {
-    ...defaultOptions,
-    ...options,
-  };
-  const signOptions: SignOptions = {
-    expiresIn,
-    algorithm: algorithms![0],
-  };
-
+  const { expiresIn, algorithms } = { ...DEFAULT_OPTIONS, ...options };
+  const signOptions: SignOptions = { expiresIn, algorithm: algorithms[0] };
   return sign(payload, secretKey, signOptions);
 };
 
